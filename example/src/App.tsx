@@ -1,13 +1,12 @@
-import { Text, View, StyleSheet } from 'react-native';
-import { multiply } from 'react-native-health-link';
+import { View, StyleSheet } from 'react-native';
+import { useHealth } from '../../src/useHealth';
 
-const result = multiply(3, 7);
+// const result = multiply(3, 7);
 
 export default function App() {
+  useHealth();
   return (
-    <View style={styles.container}>
-      <Text>Result: {result}</Text>
-    </View>
+    <View style={styles.container}>{/* <Text>Result: {result}</Text> */}</View>
   );
 }
 

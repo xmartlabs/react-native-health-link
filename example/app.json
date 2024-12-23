@@ -1,4 +1,5 @@
 {
   "name": "HealthLinkExample",
-  "displayName": "HealthLinkExample"
+  "displayName": "HealthLinkExample",
+  "plugins": ["react-native-health"]
 }
