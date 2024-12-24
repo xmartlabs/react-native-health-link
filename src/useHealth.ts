@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Platform } from 'react-native';
 import {
   initialize,
@@ -6,33 +5,27 @@ import {
   requestPermission,
 } from 'react-native-health-connect';
 
-import AppleHealthKit, { type HealthKitPermissions } from 'react-native-health';
+import {
+  genericToAndroidPermissions,
+  genericToIosPermissions,
+  type HealthPermissions,
+} from './types/permissions';
+
+const AppleHealthKit = require('react-native-health');
 
 export const useHealth = () => {
-  const initializeHealth = async () => {
+  const initializeHealth = async (permissions: HealthPermissions) => {
     if (Platform.OS === 'ios') {
-      const permissionsToAsk: HealthKitPermissions = {
-        permissions: {
-          read: [AppleHealthKit.Constants.Permissions.BloodGlucose],
-          write: [],
-        },
-      };
-      console.log('initializing health', AppleHealthKit.initHealthKit);
-      AppleHealthKit.initHealthKit(permissionsToAsk, (error: string) => {
+      const iosPermissions = genericToIosPermissions(permissions);
+      AppleHealthKit.initHealthKit(iosPermissions, (error: string) => {
         console.log(error);
       });
-    } else {
-      console.log('initializing health', initialize);
+    } else if (Platform.OS === 'android') {
+      const androidPermissions = genericToAndroidPermissions(permissions);
       await initialize();
-      await requestPermission([
-        { accessType: 'read', recordType: 'BloodGlucose' },
-      ]);
+      await requestPermission(androidPermissions);
     }
   };
-
-  useEffect(() => {
-    initializeHealth();
-  }, []);
 
   const readBloodGlucose = async () => {
     //set up the time range for the query
@@ -47,16 +40,16 @@ export const useHealth = () => {
           startDate: dayStart.toISOString(),
           endDate: dayEnd.toISOString(),
           ascending: false,
-        },
-        (err, results) => {
-          if (err) {
-            console.error(err);
-            return;
-          }
-          // setGlucose(results[0]?.value);
-          //this will return the last result
-          return results[0]?.value;
         }
+        // (err, results) => {
+        //   if (err) {
+        //     console.error(err);
+        //     return;
+        //   }
+        //   // setGlucose(results[0]?.value);
+        //   //this will return the last result
+        //   return results[0]?.value;
+        // }
       );
     } else if (Platform.OS === 'android') {
       // const results = await readRecords('BloodGlucose', {
@@ -75,5 +68,6 @@ export const useHealth = () => {
 
   return {
     readBloodGlucose,
+    initializeHealth,
   };
 };
