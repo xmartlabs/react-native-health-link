@@ -1,4 +1,4 @@
 export enum BloodGlucoseUnit {
-  MgPerdL = 'mg/dL',
-  MmolPerL = 'mmol/L',
+  MgPerdL = 'mgPerdL',
+  MmolPerL = 'mmolPerL',
 }

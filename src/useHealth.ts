@@ -98,10 +98,10 @@ const readDataResultDeserializer = (
     return (data: any) => {
       switch (dataType) {
         case 'BloodGlucose':
-          if (options.unit === BloodGlucoseUnit.MmolPerL) {
-            return data[0]?.level?.inMillimolesPerLiter;
-          } else {
+          if (options.unit === BloodGlucoseUnit.MgPerdL) {
             return data[0]?.level?.inMilligramsPerDeciliter;
+          } else {
+            return data[0]?.level?.inMillimolesPerLiter;
           }
         case 'Height':
           return data[0]?.height?.inMeters;
@@ -112,21 +112,28 @@ const readDataResultDeserializer = (
   }
 };
 
+const iosCallback = (dataType: HealthLinkDataType, options: ReadOptions) => {
+  return new Promise((resolve, reject) => {
+    dataValueToIosReadFunction(dataType)(options, (err: any, results: any) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(results);
+    });
+  });
+};
+
 export const read = async (
   dataType: HealthLinkDataType,
-  options: {
-    unit?: string;
-    startDate?: string;
-    endDate?: string;
-    ascending?: boolean;
-    limit?: number;
-  }
+  options: ReadOptions
 ) => {
+  let data;
   if (Platform.OS === 'ios') {
-    return dataValueToIosReadFunction(dataType)(options);
+    data = await iosCallback(dataType, options);
   } else if (Platform.OS === 'android') {
-    return readRecords(dataType, optionsToAndroidOptions(options));
+    data = readRecords(dataType, optionsToAndroidOptions(options));
   }
+  return readDataResultDeserializer(dataType, options)?.(data);
 };
 
 export const useHealth = () => {

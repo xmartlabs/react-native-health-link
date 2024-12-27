@@ -3,6 +3,7 @@ import { read, useHealth } from '../../src/useHealth';
 import { useEffect, useState } from 'react';
 import { HealthLinkPermissions } from '../../src/types/permissions';
 import { HealthLinkDataType } from '../../src/types/dataTypes';
+import { BloodGlucoseUnit } from '../../src/types/units';
 
 export default function App() {
   const [bloodGlucose, setBloodGlucose] = useState<number | null>(null);
@@ -14,7 +15,7 @@ export default function App() {
       write: [HealthLinkPermissions.BloodGlucose],
     }).then(() => {
       read(HealthLinkDataType.BloodGlucose, {
-        unit: 'mg/dL',
+        unit: BloodGlucoseUnit.MmolPerL,
         startDate: new Date('2021-01-01').toISOString(),
       }).then((data) => {
         setBloodGlucose(data);
@@ -23,10 +24,7 @@ export default function App() {
   });
   return (
     <View style={styles.container}>
-      <Text>
-        Your blood glucose is{' '}
-        {bloodGlucose?.records[0].level.inMillimolesPerLiter}
-      </Text>
+      <Text>Your blood glucose is {bloodGlucose}</Text>
     </View>
   );
 }
