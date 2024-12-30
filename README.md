@@ -1,6 +1,6 @@
 # react-native-health-link
 
-A common interface for react-naative-health and react-native-health-connect.
+A common interface for react-native-health and react-native-health-connect.
 
 ## Installation
 
