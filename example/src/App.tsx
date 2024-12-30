@@ -1,13 +1,12 @@
 import { View, StyleSheet, Text } from 'react-native';
-import { read, useHealth } from '../../src/useHealth';
 import { useEffect, useState } from 'react';
 import { HealthLinkPermissions } from '../../src/types/permissions';
 import { HealthLinkDataType } from '../../src/types/dataTypes';
 import { BloodGlucoseUnit } from '../../src/types/units';
+import { initializeHealth, read } from 'react-native-health-link';
 
 export default function App() {
   const [bloodGlucose, setBloodGlucose] = useState<number | null>(null);
-  const { initializeHealth } = useHealth();
   console.log(bloodGlucose);
   useEffect(() => {
     initializeHealth({
@@ -18,7 +17,7 @@ export default function App() {
         unit: BloodGlucoseUnit.MmolPerL,
         startDate: new Date('2021-01-01').toISOString(),
       }).then((data) => {
-        setBloodGlucose(data);
+        setBloodGlucose(data[0]?.value);
       });
     });
   });
