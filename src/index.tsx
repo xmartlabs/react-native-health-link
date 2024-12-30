@@ -29,7 +29,7 @@ export const initializeHealth = async (permissions: HealthPermissions) => {
   if (Platform.OS === 'ios') {
     const iosPermissions = genericToIosPermissions(permissions);
     AppleHealthKit.initHealthKit(iosPermissions, (error: string) => {
-      console.log(error);
+      console.error(error);
     });
   } else if (Platform.OS === 'android') {
     const androidPermissions = genericToAndroidPermissions(permissions);

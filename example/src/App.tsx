@@ -5,6 +5,20 @@ import { HealthLinkDataType } from '../../src/types/dataTypes';
 import { initializeHealth, read } from 'react-native-health-link';
 import { BloodGlucoseUnit, HeighUnit, WeightUnit } from '../../src/types/units';
 
+initializeHealth({
+  read: [
+    HealthLinkPermissions.BloodGlucose,
+    HealthLinkPermissions.Height,
+    HealthLinkPermissions.Weight,
+    HealthLinkPermissions.HeartRate,
+    HealthLinkPermissions.RestingHeartRate,
+    HealthLinkPermissions.BloodPressure,
+    HealthLinkPermissions.OxygenSaturation,
+    HealthLinkPermissions.Steps,
+  ],
+  write: [HealthLinkPermissions.BloodGlucose],
+});
+
 export default function App() {
   const [bloodGlucose, setBloodGlucose] = useState<number | undefined>();
   const [weight, setWeight] = useState<number | undefined>();
@@ -21,7 +35,6 @@ export default function App() {
   >();
   const [steps, setSteps] = useState<number | undefined>();
 
-  console.log(restingHeartRate, 'haah');
   useEffect(() => {
     initializeHealth({
       read: [

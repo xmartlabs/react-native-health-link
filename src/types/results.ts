@@ -38,7 +38,6 @@ export const dataValueDeserializer = <T extends HealthLinkDataType>(
   options: ReadOptions,
   dataValue: HealthValue | RecordResult<any>
 ): HealthLinkDataValue<T> | null => {
-  console.log(dataValue, 'holi');
   if (Platform.OS === 'ios') {
     let iosDataValue = dataValue as HealthValue;
     let result = {
@@ -69,7 +68,6 @@ export const dataValueDeserializer = <T extends HealthLinkDataType>(
         return result as HealthLinkDataValue<T>;
     }
   } else if (Platform.OS === 'android') {
-    console.log(dataType, 'holi');
     let androidDataValue = dataValue as RecordResult<any>;
     let result = {
       id: androidDataValue.metadata?.id,
@@ -79,8 +77,6 @@ export const dataValueDeserializer = <T extends HealthLinkDataType>(
       },
       time: (androidDataValue as any).time,
     };
-
-    console.log(androidDataValue, 'holi and');
 
     switch (dataType) {
       case HealthLinkDataType.BloodGlucose: {
@@ -135,7 +131,6 @@ export const dataValueDeserializer = <T extends HealthLinkDataType>(
         } as HealthLinkDataValue<T>;
       }
       case HealthLinkDataType.RestingHeartRate: {
-        console.log(androidDataValue, 'holi');
         const restingHeartRateDataValue =
           androidDataValue as RecordResult<'RestingHeartRate'>;
         return {
