@@ -13,9 +13,11 @@ export enum HealthLinkPermissions {
   BloodGlucose = 'BloodGlucose',
   Height = 'Height',
   Weight = 'Weight',
-  LeanBodyMass = 'LeanBodyMass',
   HeartRate = 'HeartRate',
   RestingHeartRate = 'RestingHeartRate',
+  BloodPressure = 'BloodPressure',
+  OxygenSaturation = 'OxygenSaturation',
+  Steps = 'Steps',
 }
 
 export const genericToIosPermissions = (
@@ -23,6 +25,9 @@ export const genericToIosPermissions = (
 ): HealthKitPermissions => {
   const readPermissions = permissions.read.reduce<AppleHealthPermission[]>(
     (acc, permission) => {
+      if (Array.isArray(genericToIosMap[permission])) {
+        acc.push(...(genericToIosMap[permission] as AppleHealthPermission[]));
+      }
       if (genericToIosMap[permission]) {
         acc.push(genericToIosMap[permission] as AppleHealthPermission);
       }
@@ -71,17 +76,22 @@ export const genericToAndroidPermissions = (
   return androidPermissions;
 };
 
-const genericToIosMap: { [key: string]: string } = {
+const genericToIosMap: { [key: string]: string | string[] } = {
   [HealthLinkPermissions.BloodGlucose]:
     AppleHealthKit.Constants.Permissions.BloodGlucose,
   [HealthLinkPermissions.Height]: AppleHealthKit.Constants.Permissions.Height,
   [HealthLinkPermissions.Weight]: AppleHealthKit.Constants.Permissions.Weight,
-  [HealthLinkPermissions.LeanBodyMass]:
-    AppleHealthKit.Constants.Permissions.LeanBodyMass,
   [HealthLinkPermissions.HeartRate]:
     AppleHealthKit.Constants.Permissions.HeartRate,
   [HealthLinkPermissions.RestingHeartRate]:
     AppleHealthKit.Constants.Permissions.RestingHeartRate,
+  [HealthLinkPermissions.BloodPressure]: [
+    AppleHealthKit.Constants.Permissions.BloodPressureDiastolic,
+    AppleHealthKit.Constants.Permissions.BloodPressureSystolic,
+  ],
+  [HealthLinkPermissions.OxygenSaturation]:
+    AppleHealthKit.Constants.Permissions.OxygenSaturation,
+  [HealthLinkPermissions.Steps]: AppleHealthKit.Constants.Permissions.Steps,
 };
 
 const genericToAndroidMap: {
@@ -90,7 +100,9 @@ const genericToAndroidMap: {
   [HealthLinkPermissions.BloodGlucose]: 'BloodGlucose',
   [HealthLinkPermissions.Height]: 'Height',
   [HealthLinkPermissions.Weight]: 'Weight',
-  [HealthLinkPermissions.LeanBodyMass]: 'LeanBodyMass',
   [HealthLinkPermissions.HeartRate]: 'HeartRate',
   [HealthLinkPermissions.RestingHeartRate]: 'RestingHeartRate',
+  [HealthLinkPermissions.BloodPressure]: 'BloodPressure',
+  [HealthLinkPermissions.OxygenSaturation]: 'OxygenSaturation',
+  [HealthLinkPermissions.Steps]: 'Steps',
 };

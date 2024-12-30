@@ -17,7 +17,11 @@ import {
   type ReadOptions,
 } from './types/dataTypes';
 import type { HealthValue } from 'react-native-health';
-import { readDataResultDeserializer, readIosCallback } from './types/results';
+import {
+  readDataResultDeserializer,
+  readIosCallback,
+  type HealthLinkDataValue,
+} from './types/results';
 
 const AppleHealthKit = require('react-native-health');
 
@@ -34,11 +38,11 @@ export const initializeHealth = async (permissions: HealthPermissions) => {
   }
 };
 
-export const read = async (
-  dataType: HealthLinkDataType,
+export const read = async <T extends HealthLinkDataType>(
+  dataType: T,
   options: ReadOptions
-) => {
-  let data: ReadRecordsResult<any> | HealthValue[] = [];
+): Promise<Array<HealthLinkDataValue<T>>> => {
+  let data: ReadRecordsResult<T> | HealthValue[] = [];
   if (Platform.OS === 'ios') {
     data = (await readIosCallback(dataType, options)) as HealthValue[];
   } else if (Platform.OS === 'android') {

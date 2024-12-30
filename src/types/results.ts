@@ -6,33 +6,70 @@ import {
 
 import type { HealthValue } from 'react-native-health';
 import { HealthLinkDataType, type ReadOptions } from './dataTypes';
-import { BloodGlucoseUnit } from './units';
+import {
+  androidHeightUnitMap,
+  androidWeightUnitMap,
+  BloodGlucoseUnit,
+} from './units';
 
 const AppleHealthKit = require('react-native-health');
 
-export interface HealthLinkDataValue {
-  value: any;
+export type HealthLinkDataValueMap = {
+  [HealthLinkDataType.BloodGlucose]: number;
+  [HealthLinkDataType.Height]: number;
+  [HealthLinkDataType.Weight]: number;
+  [HealthLinkDataType.HeartRate]: number;
+  [HealthLinkDataType.RestingHeartRate]: number;
+  [HealthLinkDataType.BloodPressure]: { systolic: number; diastolic: number };
+  [HealthLinkDataType.OxygenSaturation]: number;
+  [HealthLinkDataType.Steps]: number;
+};
+
+export interface HealthLinkDataValue<T extends HealthLinkDataType> {
+  value: HealthLinkDataValueMap[T];
   id?: string;
   time: string;
   metadata: {
     source?: string;
-  } & { [key: string]: any };
+  } & Record<string, any>;
 }
-
-export const dataValueDeserializer = (
-  dataType: HealthLinkDataType,
+export const dataValueDeserializer = <T extends HealthLinkDataType>(
+  dataType: T,
   options: ReadOptions,
   dataValue: HealthValue | RecordResult<any>
-): HealthLinkDataValue | null => {
-  console.log(dataValue);
-  if (Platform.OS === 'ios' && 'value' in dataValue) {
-    return {
-      value: dataValue.value,
-      id: dataValue.id,
-      time: dataValue.startDate,
-      metadata: { ...dataValue.metadata, source: (dataValue as any).sourceId },
+): HealthLinkDataValue<T> | null => {
+  console.log(dataValue, 'holi');
+  if (Platform.OS === 'ios') {
+    let iosDataValue = dataValue as HealthValue;
+    let result = {
+      value: iosDataValue.value,
+      id: iosDataValue.id,
+      time: iosDataValue.startDate,
+      metadata: {
+        ...iosDataValue.metadata,
+        source: (iosDataValue as any).sourceId,
+      },
     };
+
+    switch (dataType) {
+      case HealthLinkDataType.BloodPressure:
+        return {
+          ...result,
+          value: {
+            systolic: (iosDataValue as any).bloodPressureSystolicValue,
+            diastolic: (iosDataValue as any).bloodPressureDiastolicValue,
+          },
+        } as HealthLinkDataValue<T>;
+      case HealthLinkDataType.OxygenSaturation:
+        return {
+          ...result,
+          value: iosDataValue.value * 100,
+        } as HealthLinkDataValue<T>;
+      default:
+        return result as HealthLinkDataValue<T>;
+    }
   } else if (Platform.OS === 'android') {
+    console.log(dataType, 'holi');
     let androidDataValue = dataValue as RecordResult<any>;
     let result = {
       id: androidDataValue.metadata?.id,
@@ -42,6 +79,9 @@ export const dataValueDeserializer = (
       },
       time: (androidDataValue as any).time,
     };
+
+    console.log(androidDataValue, 'holi and');
+
     switch (dataType) {
       case HealthLinkDataType.BloodGlucose: {
         const bloodGlucoseDataValue =
@@ -58,25 +98,89 @@ export const dataValueDeserializer = (
             options?.unit === BloodGlucoseUnit.MgPerdL
               ? bloodGlucoseDataValue.level?.inMilligramsPerDeciliter
               : bloodGlucoseDataValue.level?.inMillimolesPerLiter,
-        };
+        } as unknown as HealthLinkDataValue<T>;
       }
+      case HealthLinkDataType.BloodPressure: {
+        const bloodPressureDataValue =
+          androidDataValue as RecordResult<'BloodPressure'>;
+        return {
+          ...result,
+          value: {
+            systolic: bloodPressureDataValue.systolic.inMillimetersOfMercury,
+            diastolic: bloodPressureDataValue.diastolic.inMillimetersOfMercury,
+          },
+        } as HealthLinkDataValue<T>;
+      }
+      case HealthLinkDataType.Height: {
+        const heightDataValue = androidDataValue as RecordResult<'Height'>;
+        return {
+          ...result,
+          value: androidHeightUnitMap(heightDataValue, options.unit),
+        } as HealthLinkDataValue<T>;
+      }
+      case HealthLinkDataType.Weight: {
+        const weightDataValue = androidDataValue as RecordResult<'Weight'>;
+        return {
+          ...result,
+          value: androidWeightUnitMap(weightDataValue, options.unit),
+        } as HealthLinkDataValue<T>;
+      }
+      case HealthLinkDataType.HeartRate: {
+        const heartRateDataValue =
+          androidDataValue as RecordResult<'HeartRate'>;
+        return {
+          ...result,
+          value: heartRateDataValue.samples[0]?.beatsPerMinute,
+          time: heartRateDataValue.samples[0]?.time,
+        } as HealthLinkDataValue<T>;
+      }
+      case HealthLinkDataType.RestingHeartRate: {
+        console.log(androidDataValue, 'holi');
+        const restingHeartRateDataValue =
+          androidDataValue as RecordResult<'RestingHeartRate'>;
+        return {
+          ...result,
+          value: restingHeartRateDataValue.beatsPerMinute,
+        } as HealthLinkDataValue<T>;
+      }
+      case HealthLinkDataType.OxygenSaturation: {
+        const oxygenSaturationDataValue =
+          androidDataValue as RecordResult<'OxygenSaturation'>;
+        return {
+          ...result,
+          value: oxygenSaturationDataValue.percentage,
+        } as HealthLinkDataValue<T>;
+      }
+      case HealthLinkDataType.Steps: {
+        const stepsDataValue = androidDataValue as RecordResult<'Steps'>;
+        return {
+          ...result,
+          value: stepsDataValue.count,
+        } as HealthLinkDataValue<T>;
+      }
+      default:
+        return result as HealthLinkDataValue<T>;
     }
   }
   return null;
 };
 
-export const readDataResultDeserializer = (
-  dataType: HealthLinkDataType,
+export const readDataResultDeserializer = <T extends HealthLinkDataType>(
+  dataType: T,
   options: ReadOptions,
-  data: ReadRecordsResult<any> | HealthValue[]
-) => {
-  let dataValueArray: RecordResult<any>[] | HealthValue[] =
+  data: ReadRecordsResult<T> | HealthValue[]
+): HealthLinkDataValue<T>[] => {
+  let dataValueArray: RecordResult<T>[] | HealthValue[] =
     Platform.OS === 'ios'
       ? (data as HealthValue[])
-      : (data as ReadRecordsResult<any>).records;
-  return dataValueArray.map((d) => {
-    return dataValueDeserializer(dataType, options, d);
-  });
+      : (data as ReadRecordsResult<T>).records;
+  return dataValueArray.reduce((acc, d) => {
+    const deserializedValue = dataValueDeserializer(dataType, options, d);
+    if (deserializedValue !== null) {
+      acc.push(deserializedValue);
+    }
+    return acc;
+  }, [] as HealthLinkDataValue<T>[]);
 };
 
 export const readIosCallback = (
@@ -86,6 +190,7 @@ export const readIosCallback = (
   return new Promise((resolve, reject) => {
     dataValueToIosReadFunction(dataType)(options, (err: any, results: any) => {
       if (err) {
+        console.error(err);
         reject(err);
       }
       resolve(results);
@@ -96,11 +201,13 @@ export const readIosCallback = (
 export const dataValueToIosReadFunction = (dataType: HealthLinkDataType) => {
   const dataTypeMap: { [key in HealthLinkDataType]?: any } = {
     BloodGlucose: AppleHealthKit.getBloodGlucoseSamples,
-    Height: AppleHealthKit.getLatestHeight,
-    Weight: AppleHealthKit.getLatestWeight,
-    LeanBodyMass: AppleHealthKit.getLeanBodyMass,
+    Height: AppleHealthKit.getHeightSamples,
+    Weight: AppleHealthKit.getWeightSamples,
     HeartRate: AppleHealthKit.getHeartRateSamples,
-    RestingHeartRate: AppleHealthKit.getRestingHeartRate,
+    RestingHeartRate: AppleHealthKit.getRestingHeartRateSamples,
+    OxygenSaturation: AppleHealthKit.getOxygenSaturationSamples,
+    BloodPressure: AppleHealthKit.getBloodPressureSamples,
+    Steps: AppleHealthKit.getDailyStepCountSamples,
   };
   return dataTypeMap[dataType] || (() => {});
 };

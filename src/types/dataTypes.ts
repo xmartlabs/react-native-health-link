@@ -4,9 +4,11 @@ export enum HealthLinkDataType {
   BloodGlucose = 'BloodGlucose',
   Height = 'Height',
   Weight = 'Weight',
-  LeanBodyMass = 'LeanBodyMass',
   HeartRate = 'HeartRate',
   RestingHeartRate = 'RestingHeartRate',
+  BloodPressure = 'BloodPressure',
+  OxygenSaturation = 'OxygenSaturation',
+  Steps = 'Steps',
 }
 
 export type TimeOperator = 'after' | 'before' | 'between';
