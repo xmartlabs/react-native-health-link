@@ -1,8 +1,10 @@
 import { Platform } from 'react-native';
 import {
   initialize,
+  insertRecords,
   readRecords,
   requestPermission,
+  type HealthConnectRecord,
   type ReadRecordsResult,
 } from 'react-native-health-connect';
 
@@ -16,7 +18,7 @@ import {
   optionsToAndroidOptions,
   type ReadOptions,
 } from './types/dataTypes';
-import type { HealthValue } from 'react-native-health';
+import type { HealthInputOptions, HealthValue } from 'react-native-health';
 import {
   readDataResultDeserializer,
   readIosCallback,
@@ -63,7 +65,20 @@ export const write = async <T extends WriteDataType>(
 ): Promise<void> => {
   if (Platform.OS === 'ios') {
     const serializedData = serializeWriteOptions(dataType, data);
-    await writeIosCallback(dataType, serializedData);
+    if (serializedData === null) {
+      return;
+    }
+    await writeIosCallback(dataType, serializedData as HealthInputOptions);
   } else if (Platform.OS === 'android') {
+    const serializedData = serializeWriteOptions(dataType, data);
+    if (serializedData === null) {
+      return;
+    }
+    const a = await insertRecords([
+      serializedData as HealthConnectRecord,
+    ]).catch((e) => {
+      console.error(e);
+    });
+    console.log(a);
   }
 };

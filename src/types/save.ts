@@ -1,23 +1,33 @@
-import type { HealthUnit } from 'react-native-health';
+import type { HealthInputOptions, HealthUnit } from 'react-native-health';
 import { HealthLinkDataType } from './dataTypes';
+import { Platform } from 'react-native';
+import type { HealthConnectRecord } from 'react-native-health-connect';
+import {
+  androidBloodGlucoseUnitMap,
+  BloodGlucoseUnit,
+  StepsUnit,
+  WeightUnit,
+} from './units';
 
 const AppleHealthKit = require('react-native-health');
 
 export interface WriteOptionsBase<T extends WriteDataType> {
-  value: T extends HealthLinkDataType.BloodPressure
+  value?: T extends HealthLinkDataType.BloodPressure
     ? { diastolic: number; systolic: number }
     : number;
   time?: string;
-  unit?: HealthUnit;
+  unit?: Partial<HealthUnit>;
   metadata?: {
     source?: string;
   } & Record<string, any>;
 }
 
+export type Unit = BloodGlucoseUnit | WeightUnit | StepsUnit;
+
 export type WriteOptions<T extends WriteDataType> = WriteOptionsBase<T> &
   (T extends HealthLinkDataType.Steps
     ? { startDate: string; endDate: string }
-    : { startDate?: never; endDate?: never });
+    : { startDate?: string; endDate?: string });
 
 export type WriteDataType =
   | HealthLinkDataType.BloodGlucose
@@ -29,11 +39,38 @@ export type WriteDataType =
 export const serializeWriteOptions = <T extends WriteDataType>(
   dataType: T,
   options: WriteOptions<T>
-): WriteOptions<T> => {
-  switch (dataType) {
-    default:
-      return options;
+): HealthInputOptions | HealthConnectRecord | null => {
+  if (Platform.OS === 'ios') {
+    switch (dataType) {
+      default:
+        return options;
+    }
+  } else if (Platform.OS === 'android') {
+    let androidOptions = {
+      recordType: dataType,
+      startTime: options.startDate,
+      endTime: options.endDate,
+    };
+    switch (dataType) {
+      case HealthLinkDataType.BloodGlucose:
+        const unit = options.unit
+          ? androidBloodGlucoseUnitMap[
+              options.unit as unknown as BloodGlucoseUnit
+            ]
+          : 'millimolesPerLiter';
+        //@ts-ignore
+        return {
+          ...androidOptions,
+          level: {
+            unit,
+            value: options.value,
+          },
+        };
+      default:
+        return null;
+    }
   }
+  return options;
 };
 
 export const writeIosCallback = <T extends WriteDataType>(

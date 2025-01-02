@@ -18,6 +18,10 @@ export enum HeighUnit {
   Foot = 'foot',
 }
 
+export enum StepsUnit {
+  Count = 'count',
+}
+
 export const androidHeightUnitMap = (
   data: RecordResult<'Height'>,
   unit?: string
@@ -50,4 +54,9 @@ export const androidWeightUnitMap = (
     default:
       return data.weight.inPounds;
   }
+};
+
+export const androidBloodGlucoseUnitMap = {
+  [BloodGlucoseUnit.MgPerdL]: 'milligramsPerDeciliter',
+  [BloodGlucoseUnit.MmolPerL]: 'millimolesPerLiter',
 };
