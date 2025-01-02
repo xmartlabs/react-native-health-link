@@ -2,22 +2,8 @@ import { View, StyleSheet, Text } from 'react-native';
 import { useEffect, useState } from 'react';
 import { HealthLinkPermissions } from '../../src/types/permissions';
 import { HealthLinkDataType } from '../../src/types/dataTypes';
-import { initializeHealth, read } from 'react-native-health-link';
+import { initializeHealth, read, write } from 'react-native-health-link';
 import { BloodGlucoseUnit, HeighUnit, WeightUnit } from '../../src/types/units';
-
-initializeHealth({
-  read: [
-    HealthLinkPermissions.BloodGlucose,
-    HealthLinkPermissions.Height,
-    HealthLinkPermissions.Weight,
-    HealthLinkPermissions.HeartRate,
-    HealthLinkPermissions.RestingHeartRate,
-    HealthLinkPermissions.BloodPressure,
-    HealthLinkPermissions.OxygenSaturation,
-    HealthLinkPermissions.Steps,
-  ],
-  write: [HealthLinkPermissions.BloodGlucose],
-});
 
 export default function App() {
   const [bloodGlucose, setBloodGlucose] = useState<number | undefined>();
@@ -47,7 +33,13 @@ export default function App() {
         HealthLinkPermissions.OxygenSaturation,
         HealthLinkPermissions.Steps,
       ],
-      write: [HealthLinkPermissions.BloodGlucose],
+      write: [
+        HealthLinkPermissions.BloodGlucose,
+        HealthLinkPermissions.Height,
+        HealthLinkPermissions.Weight,
+        HealthLinkPermissions.Steps,
+        HealthLinkPermissions.HeartRate,
+      ],
     }).then(() => {
       read(HealthLinkDataType.BloodGlucose, {
         unit: BloodGlucoseUnit.MmolPerL,
@@ -92,6 +84,23 @@ export default function App() {
         endDate: new Date('2024-12-31').toISOString(),
       }).then((data) => {
         setSteps(data[0]?.value);
+      });
+      write(HealthLinkDataType.BloodGlucose, {
+        value: 5,
+      });
+      write(HealthLinkDataType.Height, {
+        value: 180,
+      });
+      write(HealthLinkDataType.Weight, {
+        value: 80,
+      });
+      write(HealthLinkDataType.Steps, {
+        value: 100,
+        startDate: new Date('2024-12-31').toISOString(),
+        endDate: new Date('2024-12-31').toISOString(),
+      });
+      write(HealthLinkDataType.HeartRate, {
+        value: 100,
       });
     });
   }, []);
