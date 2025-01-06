@@ -37,7 +37,7 @@ export const optionsToAndroidOptions = (
       startTime: options.startDate!,
       endTime: options.endDate!,
     },
-    ascendingOrder: options.ascending,
+    ascendingOrder: options.ascending ?? false,
     pageSize: options.limit,
   };
 };

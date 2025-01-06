@@ -1,3 +1,4 @@
+import { HealthUnit } from 'react-native-health';
 import type { RecordResult } from 'react-native-health-connect';
 
 export enum BloodGlucoseUnit {
@@ -20,6 +21,10 @@ export enum HeighUnit {
 
 export enum StepsUnit {
   Count = 'count',
+}
+
+export enum HeartRateUnit {
+  Bpm = 'bpm',
 }
 
 export const androidHeightUnitMap = (
@@ -59,4 +64,18 @@ export const androidWeightUnitMap = (
 export const androidBloodGlucoseUnitMap = {
   [BloodGlucoseUnit.MgPerdL]: 'milligramsPerDeciliter',
   [BloodGlucoseUnit.MmolPerL]: 'millimolesPerLiter',
+};
+
+export const unitToIosUnitMap = {
+  [HeighUnit.Meter]: HealthUnit?.meter,
+  [HeighUnit.Foot]: HealthUnit?.foot,
+  [HeighUnit.Inch]: HealthUnit?.inch,
+  [WeightUnit.Gram]: HealthUnit?.gram,
+  [WeightUnit.Pounds]: HealthUnit?.pound,
+  [StepsUnit.Count]: HealthUnit?.count,
+  [BloodGlucoseUnit.MgPerdL]: HealthUnit?.mgPerdL,
+  [BloodGlucoseUnit.MmolPerL]: HealthUnit?.mmolPerL,
+  [HeighUnit.Cm]: HealthUnit?.meter,
+  [WeightUnit.Kg]: HealthUnit?.gram,
+  [HeartRateUnit.Bpm]: HealthUnit?.bpm,
 };

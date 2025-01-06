@@ -86,21 +86,23 @@ export default function App() {
         setSteps(data[0]?.value);
       });
       write(HealthLinkDataType.BloodGlucose, {
-        value: 5,
-      });
-      write(HealthLinkDataType.Height, {
-        value: 180,
-      });
-      write(HealthLinkDataType.Weight, {
-        value: 80,
+        value: 6,
       });
       write(HealthLinkDataType.Steps, {
         value: 100,
-        startDate: new Date('2024-12-31').toISOString(),
+        startDate: new Date('2024-12-30').toISOString(),
         endDate: new Date('2024-12-31').toISOString(),
       });
+      write(HealthLinkDataType.Weight, {
+        value: 58,
+        unit: WeightUnit.Kg,
+      });
+      write(HealthLinkDataType.Height, {
+        value: 165,
+        unit: HeighUnit.Cm,
+      });
       write(HealthLinkDataType.HeartRate, {
-        value: 100,
+        value: 60,
       });
     });
   }, []);
