@@ -29,18 +29,6 @@ OxygenSaturation
 Steps
 ```
 
-## **Options**
-
-```typescript
-export interface ReadOptions {
-  startDate?: string;
-  endDate?: string;
-  ascending?: boolean;
-  limit?: number;
-  unit?: string;
-}
-```
-
 ## **`ReadOptions` Interface**
 
 The `ReadOptions` interface defines the optional parameters that can be used to filter, sort, and limit the health data retrieved.
@@ -82,6 +70,19 @@ The `ReadOptions` interface defines the optional parameters that can be used to 
    - Specifies the unit for the data values.
    - Example: Use `BloodGlucoseUnit.MmolPerL` for `HealthLinkDataType.BloodGlucose`.
    - Use the units that the library exports to avoid mismatch.
+
+---
+
+### **Unit Types**
+
+The `Unit` type supports various health-related units:
+
+| **Unit Type**      | **Examples**          |
+| ------------------ | --------------------- |
+| `BloodGlucoseUnit` | `MmolPerL`, `MgPerDL` |
+| `WeightUnit`       | `Kg`, `Lbs`           |
+| `HeightUnit`       | `Cm`, `Inches`        |
+| `HeartRateUnit`    | `BeatsPerMinute`      |
 
 ---
 

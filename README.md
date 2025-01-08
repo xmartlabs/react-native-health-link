@@ -123,9 +123,10 @@ export default function App() {
 
 ### Documentation
 
-The library provides the following functions:
+#### Data functions:
 
 [read](./docs/read.md)
+[write](./docs/write.md)
 
 ## Contributing
 
