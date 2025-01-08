@@ -15,6 +15,7 @@ npm install react-native-health-link
 Set up react-native-health following this instructions:
 
 1. Install pods:
+
 ```
 cd ios && pod install
 ```
@@ -33,13 +34,12 @@ cd ios && pod install
 
 3. To add Healthkit support to your application's Capabilities:
 
-  - Open the ios/ folder of your project in Xcode
-  - Select the project name in the left sidebar
-  - In the main view select '+ Capability' and double click 'HealthKit'
-  - To enable access to clinical data types, check the Clinical Health Records box.
+- Open the ios/ folder of your project in Xcode
+- Select the project name in the left sidebar
+- In the main view select '+ Capability' and double click 'HealthKit'
+- To enable access to clinical data types, check the Clinical Health Records box.
 
 More information on react-native-health's [official GitHub page](https://github.com/agencyenterprise/react-native-health).
-
 
 ### Android
 
@@ -50,7 +50,7 @@ Make sure you have React Native version 0.71 or higher with the latest patch ins
 - [Health Connect](https://play.google.com/store/apps/details?id=com.google.android.apps.healthdata&hl=en&gl=US) needs to be installed on the user's device. Starting from Android 14 (Upside Down Cake), Health Connect is part of the Android Framework. Read more [here](https://developer.android.com/health-and-fitness/guides/health-connect/develop/get-started#step-1).
 - Health Connect API requires minSdkVersion=26 (Android Oreo / 8.0).
 - If you are planning to release your app on Google Play, you will need to submit a [declaration form](https://docs.google.com/forms/d/1LFjbq1MOCZySpP5eIVkoyzXTanpcGTYQH26lKcrQUJo/viewform?edit_requested=true). Approval can take up to 7 days.
-Approval does not grant you immediate access to Health Connect. A whitelist must propagate to the Health Connect servers, which take an additional 5-7 business days. The whitelist is updated every Monday according to Google Fit AHP support.
+  Approval does not grant you immediate access to Health Connect. A whitelist must propagate to the Health Connect servers, which take an additional 5-7 business days. The whitelist is updated every Monday according to Google Fit AHP support.
 
 #### Setup
 
@@ -91,9 +91,7 @@ You also need to setup permissions in your `AndroidManifest.xml` file. For more 
 
 More information on react-native-health-connects's [official GitHub page](https://github.com/matinzd/react-native-health-connect).
 
-
 ## Usage
-
 
 ```jsx
 import { useState } from 'react';
@@ -123,6 +121,11 @@ export default function App() {
 
 ```
 
+### Documentation
+
+The library provides the following functions:
+
+[read](./docs/read.md)
 
 ## Contributing
 
