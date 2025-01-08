@@ -123,6 +123,11 @@ export default function App() {
 
 ### Documentation
 
+#### SDK functions:
+
+[initializeHealth](./docs/initializeHealth.md)
+[isAvailable](./docs/isAvailable.md)
+
 #### Data functions:
 
 [read](./docs/read.md)
