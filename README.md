@@ -1,5 +1,8 @@
 # react-native-health-link
 
+> [!WARNING]
+> This module is currently in **alpha**. While it provides core functionality, it is still under active development and may contain bugs.
+
 A common interface for react-native-health and react-native-health-connect.
 
 ## Installation
