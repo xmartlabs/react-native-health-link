@@ -48,7 +48,13 @@
   "keywords": [
     "react-native",
     "ios",
-    "android"
+    "android",
+    "health",
+    "healthkit",
+    "health connect",
+    "googlefit",
+    "react-native-health",
+    "react-native-health-connect"
   ],
   "repository": {
     "type": "git",
