@@ -7,7 +7,7 @@ A simple way to work with HealthKit on iOS and Health Connect on Android in Reac
 
 ## Installation
 
-To install and setup this package, please go to the [installation guide](./docs/installation.md).
+To install and setup this package, please refer to the [installation guide](./docs/installation.md).
 
 ## Usage
 
