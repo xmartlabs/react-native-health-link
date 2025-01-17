@@ -86,7 +86,8 @@ export default function App() {
         setSteps(data[0]?.value);
       });
       write(HealthLinkDataType.BloodGlucose, {
-        value: 6,
+        value: 4,
+        unit: BloodGlucoseUnit.MmolPerL,
       });
       write(HealthLinkDataType.Steps, {
         value: 100,
