@@ -65,6 +65,18 @@ MIT
 
 This library provides a common interface to simplify cross-platform use of health tools; most of the credit goes to [react-native-health](https://github.com/agencyenterprise/react-native-health?tab=readme-ov-file) and [react-native-health-connect](https://github.com/matinzd/react-native-health-connect).
 
+Made with [create-react-native-library](https://github.com/callstack/react-native-builder-bob)
+
 ---
 
-Made with [create-react-native-library](https://github.com/callstack/react-native-builder-bob)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/53fab07a-54f5-4f46-a894-e3476318a68d" alt="Xmartlabs Logo" width="150" />
+</p>
+
+<p align="center">
+  <b>Created with ❤️ by <a href="https://xmartlabs.com/">Xmartlabs</a></b>
+</p>
+
+
+
+
