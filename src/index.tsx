@@ -10,11 +10,7 @@ import {
   type ReadRecordsResult,
 } from 'react-native-health-connect';
 
-import {
-  genericToAndroidPermissions,
-  genericToIosPermissions,
-  type HealthPermissions,
-} from './types/permissions';
+import { type HealthPermissions } from './types/permissions';
 import {
   HealthLinkDataType,
   optionsToAndroidOptions,
@@ -25,6 +21,10 @@ import { type HealthLinkDataValue } from './types/results';
 import { type WriteDataType, type WriteOptions } from './types/save';
 import { serializeWriteOptions, writeIosCallback } from './helpers/save';
 import { readDataResultDeserializer, readIosCallback } from './helpers/results';
+import {
+  genericToAndroidPermissions,
+  genericToIosPermissions,
+} from './helpers/permissions';
 
 const AppleHealthKit = require('react-native-health');
 
@@ -164,3 +164,4 @@ export const write = async <T extends WriteDataType>(
 export * from './types/units';
 export * from './types/dataTypes';
 export * from './types/save';
+export * from './types/permissions';
