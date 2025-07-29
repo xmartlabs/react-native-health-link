@@ -3,11 +3,29 @@
 > [!WARNING]
 > This module is currently in **alpha**. While it provides core functionality, it is still under active development and may contain bugs.
 
-A simple way to work with HealthKit on iOS and Health Connect on Android in React Native. Access health data like steps, sleep, and more with one interface that unifies react-native-health and react-native-health-connect.
+A simple way to work with HealthKit on iOS and Health Connect on Android in React Native. Access health data like blood glucose, weight, height, heart rate, resting heart rate, blood pressure, oxygen saturation, steps, and more with one interface that unifies react-native-health and react-native-health-connect.
 
 ## Installation
 
 To install and setup this package, please refer to the [installation guide](./docs/installation.md).
+
+## Supported Health Data Types
+
+This library supports reading and writing the following health data types:
+
+### Read & Write Support
+
+- **Blood glucose** - Blood glucose levels with support for mg/dL and mmol/L units
+- **Weight** - Body weight with support for kg, grams, and pounds
+- **Height** - Body height with support for cm, meters, feet, and inches
+- **Heart rate** - Heart rate measurements in beats per minute
+- **Steps** - Daily step count
+
+### Read Only Support
+
+- **Resting heart rate** - Resting heart rate measurements
+- **Blood pressure** - Systolic and diastolic blood pressure readings
+- **Oxygen saturation** - Blood oxygen saturation percentage
 
 ## Usage
 
@@ -19,6 +37,10 @@ import {
   HealthLinkDataType,
   HealthLinkPermissions,
   read,
+  write,
+  BloodGlucoseUnit,
+  WeightUnit,
+  HeighUnit
 } from 'react-native-health-link';
 
 initializeHealth({
@@ -28,15 +50,40 @@ initializeHealth({
 
 export default function App() {
   const [bloodGlucose, setBloodGlucose] = useState<number | undefined>();
+  const [weight, setWeight] = useState<number | undefined>();
 
+  // Reading health data
   read(HealthLinkDataType.BloodGlucose, {
+    unit: BloodGlucoseUnit.MmolPerL,
     startDate: new Date('2025-01-01').toISOString(),
   }).then((data) => {
     setBloodGlucose(data[0]?.value);
   });
-  return <Text>Your blood glucose is {bloodGlucose} </Text>;
-}
 
+  read(HealthLinkDataType.Weight, {
+    unit: WeightUnit.Kg,
+    startDate: new Date('2025-01-01').toISOString(),
+  }).then((data) => {
+    setWeight(data[0]?.value);
+  });
+
+  write(HealthLinkDataType.BloodGlucose, {
+    value: 4.5,
+    unit: BloodGlucoseUnit.MmolPerL,
+  });
+
+  write(HealthLinkDataType.Height, {
+    value: 175,
+    unit: HeighUnit.Cm,
+  });
+
+  return (
+    <>
+      <Text>Your blood glucose is {bloodGlucose} mmol/L</Text>
+      <Text>Your weight is {weight} kg</Text>
+    </>
+  );
+}
 ```
 
 ### Documentation
@@ -76,7 +123,3 @@ Made with [create-react-native-library](https://github.com/callstack/react-nativ
 <p align="center">
   <b>Created with ❤️ by <a href="https://xmartlabs.com/">Xmartlabs</a></b>
 </p>
-
-
-
-
