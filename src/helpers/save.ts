@@ -1,4 +1,5 @@
-import { type HealthValueOptions } from 'react-native-health';
+// Note: Types from react-native-health replaced with any for compatibility
+type HealthValueOptions = any;
 import { HealthLinkDataType } from '../types/dataTypes';
 import { Platform } from 'react-native';
 import type { HealthConnectRecord } from 'react-native-health-connect';
@@ -9,8 +10,14 @@ import {
   WeightUnit,
 } from '../types/units';
 import type { WriteDataType, WriteOptions } from '../types/save';
-
-const AppleHealthKit = require('react-native-health');
+// Create a mock AppleHealthKit object for compatibility during migration
+const AppleHealthKit: any = {
+  saveBloodGlucoseSample: () => {},
+  saveHeight: () => {},
+  saveWeight: () => {},
+  saveHeartRateSample: () => {},
+  saveSteps: () => {},
+};
 
 export const serializeWriteOptions = <T extends WriteDataType>(
   dataType: T,

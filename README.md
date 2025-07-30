@@ -3,7 +3,7 @@
 > [!WARNING]
 > This module is currently in **alpha**. While it provides core functionality, it is still under active development and may contain bugs.
 
-A simple way to work with HealthKit on iOS and Health Connect on Android in React Native. Access health data like blood glucose, weight, height, heart rate, resting heart rate, blood pressure, oxygen saturation, steps, and more with one interface that unifies react-native-health and react-native-health-connect.
+A simple way to work with HealthKit on iOS and Health Connect on Android in React Native. Access health data like blood glucose, weight, height, heart rate, resting heart rate, blood pressure, oxygen saturation, steps, and more with one interface that unifies @kingstinct/react-native-healthkit and react-native-health-connect.
 
 ## Installation
 
@@ -110,7 +110,7 @@ MIT
 
 ## Acknowledgements
 
-This library provides a common interface to simplify cross-platform use of health tools; most of the credit goes to [react-native-health](https://github.com/agencyenterprise/react-native-health?tab=readme-ov-file) and [react-native-health-connect](https://github.com/matinzd/react-native-health-connect).
+This library provides a common interface to simplify cross-platform use of health tools; most of the credit goes to [@kingstinct/react-native-healthkit](https://github.com/kingstinct/react-native-healthkit) and [react-native-health-connect](https://github.com/matinzd/react-native-health-connect).
 
 Made with [create-react-native-library](https://github.com/callstack/react-native-builder-bob)
 

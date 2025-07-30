@@ -1,7 +1,7 @@
 {
   "name": "react-native-health-link",
   "version": "0.1.4",
-  "description": "A common interface for react-naative-health and react-native-health-connect.",
+  "description": "A common interface for react-native-health and react-native-health-connect.",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
   "module": "./lib/module/index.js",
@@ -72,21 +72,20 @@
   "devDependencies": {
     "@commitlint/config-conventional": "^17.0.2",
     "@evilmartians/lefthook": "^1.5.0",
+    "@kingstinct/react-native-healthkit": "^9.0.11",
     "@react-native-community/cli": "15.0.1",
     "@react-native/eslint-config": "^0.73.1",
     "@release-it/conventional-changelog": "^9.0.2",
     "@types/react": "^18.2.44",
     "commitlint": "^17.0.2",
     "del-cli": "^5.1.0",
-    "eslint": "^8.51.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-prettier": "^5.0.1",
-    "prettier": "^3.0.3",
+    "eslint": "^9.21.0",
+    "prettier": "^3.5.1",
     "react": "18.3.1",
     "react-native": "0.76.5",
     "react-native-builder-bob": "^0.35.2",
-    "react-native-health": "https://github.com/andrewzey/react-native-health#patch-1",
     "react-native-health-connect": "^3.3.1",
+    "react-native-nitro-modules": "^0.27.2",
     "release-it": "^17.10.0",
     "turbo": "^1.10.7",
     "typescript": "^5.2.2"
@@ -95,15 +94,15 @@
     "@types/react": "^18.2.44"
   },
   "peerDependencies": {
+    "@kingstinct/react-native-healthkit": "^9.0.11",
     "react": "*",
     "react-native": "*",
-    "react-native-health": "^1.19.0",
     "react-native-health-connect": "^3.3.1"
   },
   "workspaces": [
     "example"
   ],
-  "packageManager": "yarn@3.6.1",
+  "packageManager": "yarn@4.1.1",
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"

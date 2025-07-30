@@ -10,13 +10,25 @@ import {
   type ReadRecordsResult,
 } from 'react-native-health-connect';
 
+// Import from the new @kingstinct/react-native-healthkit library
+// Note: Install @kingstinct/react-native-healthkit and react-native-nitro-modules dependencies
+let isHealthDataAvailable: any, requestAuthorization: any;
+try {
+  const healthKit = require('@kingstinct/react-native-healthkit');
+  isHealthDataAvailable = healthKit.isHealthDataAvailable;
+  requestAuthorization = healthKit.requestAuthorization;
+} catch (error) {
+  console.warn(
+    '@kingstinct/react-native-healthkit not found. Please install the dependency.'
+  );
+}
+
 import { type HealthPermissions } from './types/permissions';
 import {
   HealthLinkDataType,
   optionsToAndroidOptions,
   type ReadOptions,
 } from './types/dataTypes';
-import type { HealthValue } from 'react-native-health';
 import { type HealthLinkDataValue } from './types/results';
 import { type WriteDataType, type WriteOptions } from './types/save';
 import { serializeWriteOptions, writeIosCallback } from './helpers/save';
@@ -26,7 +38,28 @@ import {
   genericToIosPermissions,
 } from './helpers/permissions';
 
-const AppleHealthKit = require('react-native-health');
+// For backward compatibility, we create an AppleHealthKit object that mimics the old API
+export const AppleHealthKit = {
+  async initHealthKit(
+    permissions: any,
+    callback: (error: string | null) => void
+  ) {
+    try {
+      await requestAuthorization(permissions);
+      callback(null);
+    } catch (error) {
+      callback(error as string);
+    }
+  },
+  async isAvailable(callback: (err: any, available: boolean) => void) {
+    try {
+      const available = await isHealthDataAvailable();
+      callback(null, available);
+    } catch (error) {
+      callback(error, false);
+    }
+  },
+};
 
 /**
  * Initializes the health integration for the application by requesting the necessary permissions
@@ -46,10 +79,12 @@ const AppleHealthKit = require('react-native-health');
  * ```
  */
 export const initializeHealth = async (permissions: HealthPermissions) => {
-  if (Platform.OS === 'ios') {
+  if (Platform.OS === 'ios' && AppleHealthKit) {
     const iosPermissions = genericToIosPermissions(permissions);
-    AppleHealthKit.initHealthKit(iosPermissions, (error: string) => {
-      console.error(error);
+    AppleHealthKit.initHealthKit(iosPermissions, (error: string | null) => {
+      if (error) {
+        console.error(error);
+      }
     });
   } else if (Platform.OS === 'android') {
     const androidPermissions = genericToAndroidPermissions(permissions);
@@ -121,9 +156,9 @@ export const read = async <T extends HealthLinkDataType>(
   dataType: T,
   options: ReadOptions
 ): Promise<Array<HealthLinkDataValue<T>>> => {
-  let data: ReadRecordsResult<T> | HealthValue[] = [];
+  let data: ReadRecordsResult<T> | any[] = [];
   if (Platform.OS === 'ios') {
-    data = (await readIosCallback(dataType, options)) as HealthValue[];
+    data = (await readIosCallback(dataType, options)) as any[];
   } else if (Platform.OS === 'android') {
     data = await readRecords(dataType, optionsToAndroidOptions(options));
   }

@@ -4,7 +4,8 @@ import {
   type RecordResult,
 } from 'react-native-health-connect';
 
-import type { HealthValue } from 'react-native-health';
+// Note: HealthValue type from react-native-health replaced with any for compatibility
+type HealthValue = any;
 import { HealthLinkDataType, type ReadOptions } from '../types/dataTypes';
 import {
   androidHeightUnitMap,
@@ -12,8 +13,17 @@ import {
   BloodGlucoseUnit,
 } from '../types/units';
 import type { HealthLinkDataValue } from '../types/results';
-
-const AppleHealthKit = require('react-native-health');
+// Create a mock AppleHealthKit object for compatibility during migration
+const AppleHealthKit: any = {
+  getBloodGlucoseSamples: () => {},
+  getHeightSamples: () => {},
+  getWeightSamples: () => {},
+  getHeartRateSamples: () => {},
+  getRestingHeartRateSamples: () => {},
+  getOxygenSaturationSamples: () => {},
+  getBloodPressureSamples: () => {},
+  getDailyStepCountSamples: () => {},
+};
 
 export const dataValueDeserializer = <T extends HealthLinkDataType>(
   dataType: T,

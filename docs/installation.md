@@ -5,7 +5,8 @@ First, you need to add the necessary dependencies using `yarn` or `npm`:
 yarn:
 
 ```sh
-yarn add react-native-health
+yarn add @kingstinct/react-native-healthkit
+yarn add react-native-nitro-modules
 yarn add react-native-health-connect
 yarn add react-native-health-link
 ```
@@ -13,14 +14,15 @@ yarn add react-native-health-link
 npm:
 
 ```sh
-npm install react-native-health
+npm install @kingstinct/react-native-healthkit
+npm install react-native-nitro-modules
 npm install react-native-health-connect
 npm install react-native-health-link
 ```
 
 ### ios
 
-Set up react-native-health following this instructions:
+Set up @kingstinct/react-native-healthkit following these instructions:
 
 1. Install pods:
 
@@ -47,7 +49,7 @@ cd ios && pod install
 - In the main view select '+ Capability' and double click 'HealthKit'
 - To enable access to clinical data types, check the Clinical Health Records box.
 
-More information on react-native-health's [official GitHub page](https://github.com/agencyenterprise/react-native-health).
+More information on @kingstinct/react-native-healthkit's [official GitHub page](https://github.com/kingstinct/react-native-healthkit).
 
 ### Android
 

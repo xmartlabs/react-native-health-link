@@ -1,4 +1,18 @@
-import { HealthUnit } from 'react-native-health';
+// Note: HealthUnit from react-native-health replaced with mock object for compatibility
+const HealthUnit = {
+  gram: 'gram',
+  kilogram: 'kilogram',
+  pound: 'pound',
+  meter: 'meter',
+  foot: 'foot',
+  inch: 'inch',
+  milligramsPerDeciliter: 'milligramsPerDeciliter',
+  millimolesPerLiter: 'millimolesPerLiter',
+  count: 'count',
+  mgPerdL: 'mgPerdL',
+  mmolPerL: 'mmolPerL',
+  bpm: 'bpm',
+};
 import type { RecordResult } from 'react-native-health-connect';
 
 export enum BloodGlucoseUnit {
