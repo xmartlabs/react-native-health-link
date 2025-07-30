@@ -27,6 +27,12 @@ export enum HeartRateUnit {
   Bpm = 'bpm',
 }
 
+export enum EnergyUnit {
+  Calories = 'calories',
+  Joules = 'joules',
+  Kilojoules = 'kilojoules',
+}
+
 export const androidHeightUnitMap = (
   data: RecordResult<'Height'>,
   unit?: string
@@ -66,6 +72,38 @@ export const androidBloodGlucoseUnitMap = {
   [BloodGlucoseUnit.MmolPerL]: 'millimolesPerLiter',
 };
 
+export const androidActiveEnergyUnitMap = (
+  data: RecordResult<'ActiveCaloriesBurned'>,
+  unit?: string
+) => {
+  switch (unit) {
+    case EnergyUnit.Calories:
+      return data.energy.inCalories;
+    case EnergyUnit.Joules:
+      return data.energy.inJoules;
+    case EnergyUnit.Kilojoules:
+      return data.energy.inKilojoules;
+    default:
+      return data.energy.inCalories;
+  }
+};
+
+export const androidBasalEnergyUnitMap = (
+  data: RecordResult<'BasalMetabolicRate'>,
+  unit?: string
+) => {
+  switch (unit) {
+    case EnergyUnit.Calories:
+      return data.basalMetabolicRate.inKilocaloriesPerDay;
+    case EnergyUnit.Kilojoules:
+      return data.basalMetabolicRate.inWatts * 86.4; // Convert watts to kJ/day (1 watt = 86.4 kJ/day)
+    case EnergyUnit.Joules:
+      return data.basalMetabolicRate.inWatts * 86400; // Convert watts to J/day (1 watt = 86400 J/day)
+    default:
+      return data.basalMetabolicRate.inKilocaloriesPerDay;
+  }
+};
+
 export const unitToIosUnitMap = {
   [HeighUnit.Meter]: HealthUnit?.meter,
   [HeighUnit.Foot]: HealthUnit?.foot,
@@ -78,4 +116,7 @@ export const unitToIosUnitMap = {
   [HeighUnit.Cm]: HealthUnit?.meter,
   [WeightUnit.Kg]: HealthUnit?.gram,
   [HeartRateUnit.Bpm]: HealthUnit?.bpm,
+  [EnergyUnit.Calories]: HealthUnit?.calorie,
+  [EnergyUnit.Joules]: HealthUnit?.joule,
+  [EnergyUnit.Kilojoules]: HealthUnit?.kilocalorie,
 };

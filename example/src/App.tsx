@@ -3,7 +3,12 @@ import { useEffect, useState } from 'react';
 import { HealthLinkPermissions } from '../../src/types/permissions';
 import { HealthLinkDataType } from '../../src/types/dataTypes';
 import { initializeHealth, read, write } from 'react-native-health-link';
-import { BloodGlucoseUnit, HeighUnit, WeightUnit } from '../../src/types/units';
+import {
+  BloodGlucoseUnit,
+  EnergyUnit,
+  HeighUnit,
+  WeightUnit,
+} from '../../src/types/units';
 
 export default function App() {
   const [bloodGlucose, setBloodGlucose] = useState<number | undefined>();
@@ -20,6 +25,12 @@ export default function App() {
     number | undefined
   >();
   const [steps, setSteps] = useState<number | undefined>();
+  const [activeEnergyBurned, setActiveEnergyBurned] = useState<
+    number | undefined
+  >();
+  const [basalEnergyBurned, setBasalEnergyBurned] = useState<
+    number | undefined
+  >();
 
   useEffect(() => {
     initializeHealth({
@@ -32,6 +43,8 @@ export default function App() {
         HealthLinkPermissions.BloodPressure,
         HealthLinkPermissions.OxygenSaturation,
         HealthLinkPermissions.Steps,
+        HealthLinkPermissions.ActiveEnergyBurned,
+        HealthLinkPermissions.BasalEnergyBurned,
       ],
       write: [
         HealthLinkPermissions.BloodGlucose,
@@ -85,6 +98,18 @@ export default function App() {
       }).then((data) => {
         setSteps(data[0]?.value);
       });
+      read(HealthLinkDataType.ActiveEnergyBurned, {
+        startDate: new Date('2024-12-30').toISOString(),
+        unit: EnergyUnit.Calories,
+      }).then((data) => {
+        setActiveEnergyBurned(data[0]?.value);
+      });
+      read(HealthLinkDataType.BasalEnergyBurned, {
+        startDate: new Date('2024-12-30').toISOString(),
+        unit: EnergyUnit.Calories,
+      }).then((data) => {
+        setBasalEnergyBurned(data[0]?.value);
+      });
       write(HealthLinkDataType.BloodGlucose, {
         value: 4,
         unit: BloodGlucoseUnit.MmolPerL,
@@ -121,6 +146,8 @@ export default function App() {
       </Text>
       <Text>Your oxygen saturation is {oxygenSaturation}</Text>
       <Text>Your steps today are {steps}</Text>
+      <Text>Your active energy is {activeEnergyBurned}</Text>
+      <Text>Your basal energy is {basalEnergyBurned}</Text>
     </View>
   );
 }

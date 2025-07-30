@@ -1,6 +1,7 @@
 import { HealthLinkDataType } from './dataTypes';
 import {
   BloodGlucoseUnit,
+  EnergyUnit,
   HeartRateUnit,
   HeighUnit,
   StepsUnit,
@@ -23,7 +24,8 @@ export type Unit =
   | WeightUnit
   | StepsUnit
   | HeighUnit
-  | HeartRateUnit;
+  | HeartRateUnit
+  | EnergyUnit;
 
 export type WriteOptions<T extends WriteDataType> = WriteOptionsBase<T> &
   (T extends HealthLinkDataType.Steps
@@ -39,10 +41,14 @@ export type WriteOptions<T extends WriteDataType> = WriteOptionsBase<T> &
  * @property {HealthLinkDataType.Weight} Weight - Represents weight data.
  * @property {HealthLinkDataType.HeartRate} HeartRate - Represents heart rate data.
  * @property {HealthLinkDataType.Steps} Steps - Represents steps data.
+ * @property {HealthLinkDataType.ActiveEnergyBurned} ActiveEnergyBurned - Represents active calories burned data.
+ * @property {HealthLinkDataType.BasalEnergyBurned} BasalEnergyBurned - Represents basal calories burned data.
  */
 export type WriteDataType =
   | HealthLinkDataType.BloodGlucose
   | HealthLinkDataType.Height
   | HealthLinkDataType.Weight
   | HealthLinkDataType.HeartRate
-  | HealthLinkDataType.Steps;
+  | HealthLinkDataType.Steps
+  | HealthLinkDataType.ActiveEnergyBurned
+  | HealthLinkDataType.BasalEnergyBurned;

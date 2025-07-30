@@ -4,6 +4,7 @@ import { Platform } from 'react-native';
 import type { HealthConnectRecord } from 'react-native-health-connect';
 import {
   BloodGlucoseUnit,
+  EnergyUnit,
   HeighUnit,
   unitToIosUnitMap,
   WeightUnit,
@@ -107,6 +108,35 @@ export const serializeWriteOptions = <T extends WriteDataType>(
             },
           ],
         };
+      case HealthLinkDataType.ActiveEnergyBurned: {
+        const energyUnit =
+          options.unit === EnergyUnit.Calories
+            ? 'calories'
+            : options.unit === EnergyUnit.Joules
+              ? 'joules'
+              : 'kilojoules';
+        return {
+          ...androidOptions,
+          recordType: 'ActiveCaloriesBurned',
+          energy: { unit: energyUnit, value: options.value as number },
+        };
+      }
+      case HealthLinkDataType.BasalEnergyBurned: {
+        const energyUnit =
+          options.unit === EnergyUnit.Calories ? 'kilocaloriesPerDay' : 'watts';
+        const energyValue =
+          options.unit === EnergyUnit.Calories
+            ? (options.value as number)
+            : options.unit === EnergyUnit.Joules
+              ? (options.value as number) / 86400 // Convert J/day to watts
+              : (options.value as number) / 86.4; // Convert kJ/day to watts
+        return {
+          ...androidOptions,
+          recordType: 'BasalMetabolicRate',
+          time: options.time ?? androidOptions.startTime,
+          basalMetabolicRate: { unit: energyUnit, value: energyValue },
+        };
+      }
       default:
         return null;
     }
@@ -137,6 +167,8 @@ export const dataValueToIosWriteFunction = (dataType: WriteDataType) => {
     Weight: AppleHealthKit.saveWeight,
     HeartRate: AppleHealthKit.saveHeartRateSample,
     Steps: AppleHealthKit.saveSteps,
+    ActiveEnergyBurned: AppleHealthKit.saveActiveEnergyBurned,
+    BasalEnergyBurned: AppleHealthKit.saveBasalEnergyBurned,
   };
   return dataTypeMap[dataType] || (() => {});
 };
