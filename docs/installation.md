@@ -98,3 +98,62 @@ class MainActivity : ReactActivity() {
 You also need to setup permissions in your `AndroidManifest.xml` file. For more information, check [here](https://matinzd.github.io/react-native-health-connect/docs/permissions).
 
 More information on react-native-health-connects's [official GitHub page](https://github.com/matinzd/react-native-health-connect).
+
+#### Expo installation
+
+This package cannot be used in the [Expo Go](https://expo.io/client) app, but it can be used with custom managed apps.
+Just add the [config plugin](https://docs.expo.io/guides/config-plugins/) to the [`plugins`](https://docs.expo.io/versions/latest/config/app/#plugins) array of your `app.json` or `app.config.js`:
+
+First install the package with yarn, npm, or [`expo install`](https://docs.expo.io/workflow/expo-cli/#expo-install).
+
+```sh
+npm install expo-health-connect
+npm install expo-build-properties --save-dev
+```
+
+Then add the prebuild [config plugin](https://docs.expo.io/guides/config-plugins/) to the [`plugins`](https://docs.expo.io/versions/latest/config/app/#plugins) array of your `app.json` or `app.config.js`:
+
+```json
+{
+  "expo": {
+    "plugins": ["expo-health-connect"]
+  }
+}
+```
+
+- Edit your app.json again and add this
+
+```json
+{
+  "expo": {
+    ...
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 34,
+            "targetSdkVersion": 34,
+            "minSdkVersion": 26
+          },
+        }
+      ]
+    ]
+   ...
+  }
+}
+```
+
+Then rebuild the native app:
+
+- Run `expo prebuild`
+  - This will apply the config plugin using [prebuilding](https://expo.fyi/prebuilding).
+- Rebuild the app
+  - `yarn android` -- Build on Android.
+
+> If the project doesn't build correctly with `yarn android`, please file an issue and try setting the project up manually.
+
+Finally create a new EAS development build
+
+`eas build --profile development --platform android`
+
