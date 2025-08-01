@@ -9,6 +9,8 @@ export type HealthLinkDataValueMap = {
   [HealthLinkDataType.BloodPressure]: { systolic: number; diastolic: number };
   [HealthLinkDataType.OxygenSaturation]: number;
   [HealthLinkDataType.Steps]: number;
+  [HealthLinkDataType.ActiveEnergyBurned]: number;
+  [HealthLinkDataType.BasalEnergyBurned]: number;
 };
 
 export interface HealthLinkDataValue<T extends HealthLinkDataType> {

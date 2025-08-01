@@ -12,4 +12,6 @@ export enum HealthLinkPermissions {
   BloodPressure = 'BloodPressure',
   OxygenSaturation = 'OxygenSaturation',
   Steps = 'Steps',
+  ActiveEnergyBurned = 'ActiveEnergyBurned',
+  BasalEnergyBurned = 'BasalEnergyBurned',
 }

@@ -4,7 +4,7 @@ The `initializeHealth` function sets up health integration for the application b
 
 It accepts a `permissions` object with keys `read` and `write`. Use the `HealthLinkPermissions` enum to add permissions to the arrays.
 
-Write method does not support `BloodPressure`, `RestingHeartRate` and `OxygenSaturation`, so I'd recommend not to ask for write permissions for those data types.
+Write method does not support `BloodPressure`, `RestingHeartRate`, `ActiveEnergyBurned`, `BasalEnergyBurned` and `OxygenSaturation`, so I'd recommend not to ask for write permissions for those data types.
 
 ---
 

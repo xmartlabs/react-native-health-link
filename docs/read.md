@@ -27,6 +27,8 @@ RestingHeartRate
 BloodPressure
 OxygenSaturation
 Steps
+ActiveEnergyBurned
+BasalEnergyBurned
 ```
 
 ## **`ReadOptions` Interface**
@@ -77,12 +79,13 @@ The `ReadOptions` interface defines the optional parameters that can be used to 
 
 The `Unit` type supports various health-related units:
 
-| **Unit Type**      | **Examples**          |
-| ------------------ | --------------------- |
-| `BloodGlucoseUnit` | `MmolPerL`, `MgPerDL` |
-| `WeightUnit`       | `Kg`, `Lbs`           |
-| `HeightUnit`       | `Cm`, `Inches`        |
-| `HeartRateUnit`    | `BeatsPerMinute`      |
+| **Unit Type**      | **Examples**                       |
+| ------------------ | ---------------------------------- |
+| `BloodGlucoseUnit` | `MmolPerL`, `MgPerDL`              |
+| `WeightUnit`       | `Kg`, `Lbs`                        |
+| `HeightUnit`       | `Cm`, `Inches`                     |
+| `HeartRateUnit`    | `BeatsPerMinute`                   |
+| `EnergyUnit`       | `Calories`, `Joules`, `Kilojoules` |
 
 ---
 
@@ -95,5 +98,25 @@ read(HealthLinkDataType.BloodGlucose, {
   startDate: '2021-01-01T00:00:00Z',
   endDate: '2021-12-31T23:59:59Z',
   unit: BloodGlucoseUnit.MmolPerL,
+});
+```
+
+#### Retrieve Active Energy Burned Data
+
+```typescript
+read(HealthLinkDataType.ActiveEnergyBurned, {
+  startDate: '2025-01-01T00:00:00Z',
+  endDate: '2025-01-31T23:59:59Z',
+  unit: EnergyUnit.Calories,
+});
+```
+
+#### Retrieve Basal Energy Burned Data
+
+```typescript
+read(HealthLinkDataType.BasalEnergyBurned, {
+  startDate: '2025-01-01T00:00:00Z',
+  endDate: '2025-01-31T23:59:59Z',
+  unit: EnergyUnit.Calories,
 });
 ```
