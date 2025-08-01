@@ -41,14 +41,10 @@ export type WriteOptions<T extends WriteDataType> = WriteOptionsBase<T> &
  * @property {HealthLinkDataType.Weight} Weight - Represents weight data.
  * @property {HealthLinkDataType.HeartRate} HeartRate - Represents heart rate data.
  * @property {HealthLinkDataType.Steps} Steps - Represents steps data.
- * @property {HealthLinkDataType.ActiveEnergyBurned} ActiveEnergyBurned - Represents active calories burned data.
- * @property {HealthLinkDataType.BasalEnergyBurned} BasalEnergyBurned - Represents basal calories burned data.
  */
 export type WriteDataType =
   | HealthLinkDataType.BloodGlucose
   | HealthLinkDataType.Height
   | HealthLinkDataType.Weight
   | HealthLinkDataType.HeartRate
-  | HealthLinkDataType.Steps
-  | HealthLinkDataType.ActiveEnergyBurned
-  | HealthLinkDataType.BasalEnergyBurned;
+  | HealthLinkDataType.Steps;

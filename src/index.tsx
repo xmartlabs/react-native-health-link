@@ -49,9 +49,7 @@ const AppleHealthKit = require('react-native-health');
 export const initializeHealth = async (permissions: HealthPermissions) => {
   if (Platform.OS === 'ios') {
     const iosPermissions = genericToIosPermissions(permissions);
-    AppleHealthKit.initHealthKit(iosPermissions, (error: string) => {
-      console.error(error);
-    });
+    AppleHealthKit.initHealthKit(iosPermissions);
   } else if (Platform.OS === 'android') {
     const androidPermissions = genericToAndroidPermissions(permissions);
     await initialize();
