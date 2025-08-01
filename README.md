@@ -26,8 +26,6 @@ This library supports reading and writing the following health data types:
 - **Resting heart rate** - Resting heart rate measurements
 - **Blood pressure** - Systolic and diastolic blood pressure readings
 - **Oxygen saturation** - Blood oxygen saturation percentage
-- **Active Energy Burned** - The amount of energy expended during a specific activity.
-- **Basal Energy Burned** - The amount of energy expended at rest.
 
 ## Usage
 
