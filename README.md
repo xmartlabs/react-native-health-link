@@ -29,6 +29,7 @@ This library supports reading and writing the following health data types:
 - **Active Energy Burned** - The amount of energy expended during a specific activity.
 - **Basal Energy Burned** - The amount of energy expended at rest.
 
+
 ## Usage
 
 ```jsx
