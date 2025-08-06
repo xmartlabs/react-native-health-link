@@ -6,6 +6,35 @@ const mockCallback = (callback) => {
 
 const mockFunctionWithCallback = jest.fn().mockImplementation(mockCallback);
 
+const mockBloodPressureCallback = jest
+  .fn()
+  .mockImplementation((_, callback) => {
+    callback(null, [
+      {
+        bloodPressureSystolicValue: 120,
+        bloodPressureDiastolicValue: 80,
+        startDate: '2023-01-01',
+        endDate: '2023-01-01',
+        id: 'bp-mock-1',
+        sourceId: 'test-source',
+      },
+    ]);
+  });
+
+const mockOxygenSaturationCallback = jest
+  .fn()
+  .mockImplementation((_, callback) => {
+    callback(null, [
+      {
+        value: 0.98,
+        unit: 'percent',
+        startDate: '2023-01-01',
+        endDate: '2023-01-01',
+        id: 'o2-mock-1',
+      },
+    ]);
+  });
+
 module.exports = {
   initHealthKit: jest.fn().mockImplementation((options, callback) => {
     if (typeof callback === 'function') {
@@ -22,8 +51,8 @@ module.exports = {
   getWeightSamples: mockFunctionWithCallback,
   getHeartRateSamples: mockFunctionWithCallback,
   getRestingHeartRateSamples: mockFunctionWithCallback,
-  getOxygenSaturationSamples: mockFunctionWithCallback,
-  getBloodPressureSamples: mockFunctionWithCallback,
+  getOxygenSaturationSamples: mockOxygenSaturationCallback,
+  getBloodPressureSamples: mockBloodPressureCallback,
   getDailyStepCountSamples: mockFunctionWithCallback,
   getActiveEnergyBurned: mockFunctionWithCallback,
   getBasalEnergyBurned: mockFunctionWithCallback,
