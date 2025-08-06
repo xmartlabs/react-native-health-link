@@ -70,6 +70,7 @@ export default function App() {
     setWeight(data[0]?.value);
   });
 
+  //Writing health data
   write(HealthLinkDataType.BloodGlucose, {
     value: 4.5,
     unit: BloodGlucoseUnit.MmolPerL,
