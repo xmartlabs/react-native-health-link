@@ -7,20 +7,25 @@ import {
   requestPermission,
   SdkAvailabilityStatus,
   type HealthConnectRecord,
+  type ReadRecordsResult,
 } from 'react-native-health-connect';
 
 import { type HealthPermissions } from './types/permissions';
 import {
   HealthLinkDataType,
   optionsToAndroidOptions,
-  healthLinkToAndroidType,
   type ReadOptions,
+  type AndroidType,
 } from './types/dataTypes';
 import type { HealthValue } from 'react-native-health';
 import { type HealthLinkDataValue } from './types/results';
 import { type WriteDataType, type WriteOptions } from './types/save';
 import { serializeWriteOptions, writeIosCallback } from './helpers/save';
-import { readDataResultDeserializer, readIosCallback } from './helpers/results';
+import {
+  healthLinkToAndroidType,
+  readDataResultDeserializer,
+  readIosCallback,
+} from './helpers/results';
 
 import {
   genericToAndroidPermissions,
@@ -120,7 +125,7 @@ export const read = async <T extends HealthLinkDataType>(
   dataType: T,
   options: ReadOptions
 ): Promise<Array<HealthLinkDataValue<T>>> => {
-  let data: any;
+  let data: ReadRecordsResult<AndroidType> | HealthValue[] = [];
   if (Platform.OS === 'ios') {
     data = (await readIosCallback(dataType, options)) as HealthValue[];
   } else if (Platform.OS === 'android') {

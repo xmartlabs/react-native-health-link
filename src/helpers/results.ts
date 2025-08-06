@@ -1,8 +1,17 @@
 import { Platform } from 'react-native';
-import { type RecordResult } from 'react-native-health-connect';
+import {
+  type ReadRecordsResult,
+  type RecordResult,
+} from 'react-native-health-connect';
 
 import type { HealthValue } from 'react-native-health';
-import { HealthLinkDataType, type ReadOptions } from '../types/dataTypes';
+import {
+  HealthLinkDataType,
+  type AndroidRecordType,
+  type AndroidType,
+  type ReadOptions,
+  AndroidRecordTypeMap,
+} from '../types/dataTypes';
 import {
   androidHeightUnitMap,
   androidWeightUnitMap,
@@ -13,21 +22,6 @@ import {
 import type { HealthLinkDataValue } from '../types/results';
 
 const AppleHealthKit = require('react-native-health');
-
-type AndroidRecordTypeMap = {
-  [HealthLinkDataType.BloodGlucose]: 'BloodGlucose';
-  [HealthLinkDataType.Height]: 'Height';
-  [HealthLinkDataType.Weight]: 'Weight';
-  [HealthLinkDataType.HeartRate]: 'HeartRate';
-  [HealthLinkDataType.RestingHeartRate]: 'RestingHeartRate';
-  [HealthLinkDataType.BloodPressure]: 'BloodPressure';
-  [HealthLinkDataType.OxygenSaturation]: 'OxygenSaturation';
-  [HealthLinkDataType.Steps]: 'Steps';
-  [HealthLinkDataType.ActiveEnergyBurned]: 'ActiveCaloriesBurned';
-  [HealthLinkDataType.BasalEnergyBurned]: 'BasalMetabolicRate';
-};
-
-type AndroidRecordType<T extends HealthLinkDataType> = AndroidRecordTypeMap[T];
 
 export const dataValueDeserializer = <T extends HealthLinkDataType>(
   dataType: T,
@@ -178,7 +172,7 @@ export const dataValueDeserializer = <T extends HealthLinkDataType>(
 export const readDataResultDeserializer = <T extends HealthLinkDataType>(
   dataType: T,
   options: ReadOptions,
-  data: HealthValue[] | { records: RecordResult<AndroidRecordType<T>>[] }
+  data: HealthValue[] | ReadRecordsResult<AndroidType>
 ): HealthLinkDataValue<T>[] => {
   const dataValueArray =
     Platform.OS === 'ios'
@@ -223,4 +217,10 @@ export const dataValueToIosReadFunction = (dataType: HealthLinkDataType) => {
     BasalEnergyBurned: AppleHealthKit.getBasalEnergyBurned,
   };
   return dataTypeMap[dataType] || (() => {});
+};
+
+export const healthLinkToAndroidType = (
+  dataType: HealthLinkDataType
+): AndroidType => {
+  return AndroidRecordTypeMap[dataType];
 };

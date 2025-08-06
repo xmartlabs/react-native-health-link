@@ -59,7 +59,7 @@ export const optionsToAndroidOptions = (
   };
 };
 
-type AndroidType =
+export type AndroidType =
   | 'BloodGlucose'
   | 'Height'
   | 'Weight'
@@ -71,20 +71,18 @@ type AndroidType =
   | 'ActiveCaloriesBurned'
   | 'BasalMetabolicRate';
 
-export const healthLinkToAndroidType = (
-  dataType: HealthLinkDataType
-): AndroidType => {
-  const typeMap: Record<HealthLinkDataType, AndroidType> = {
-    [HealthLinkDataType.BloodGlucose]: 'BloodGlucose',
-    [HealthLinkDataType.Height]: 'Height',
-    [HealthLinkDataType.Weight]: 'Weight',
-    [HealthLinkDataType.HeartRate]: 'HeartRate',
-    [HealthLinkDataType.RestingHeartRate]: 'RestingHeartRate',
-    [HealthLinkDataType.BloodPressure]: 'BloodPressure',
-    [HealthLinkDataType.OxygenSaturation]: 'OxygenSaturation',
-    [HealthLinkDataType.Steps]: 'Steps',
-    [HealthLinkDataType.ActiveEnergyBurned]: 'ActiveCaloriesBurned',
-    [HealthLinkDataType.BasalEnergyBurned]: 'BasalMetabolicRate',
-  };
-  return typeMap[dataType];
+export const AndroidRecordTypeMap: Record<HealthLinkDataType, AndroidType> = {
+  [HealthLinkDataType.BloodGlucose]: 'BloodGlucose',
+  [HealthLinkDataType.Height]: 'Height',
+  [HealthLinkDataType.Weight]: 'Weight',
+  [HealthLinkDataType.HeartRate]: 'HeartRate',
+  [HealthLinkDataType.RestingHeartRate]: 'RestingHeartRate',
+  [HealthLinkDataType.BloodPressure]: 'BloodPressure',
+  [HealthLinkDataType.OxygenSaturation]: 'OxygenSaturation',
+  [HealthLinkDataType.Steps]: 'Steps',
+  [HealthLinkDataType.ActiveEnergyBurned]: 'ActiveCaloriesBurned',
+  [HealthLinkDataType.BasalEnergyBurned]: 'BasalMetabolicRate',
 };
+
+export type AndroidRecordType<T extends HealthLinkDataType> =
+  (typeof AndroidRecordTypeMap)[T];
