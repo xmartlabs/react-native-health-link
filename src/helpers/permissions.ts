@@ -80,6 +80,10 @@ const genericToIosMap: { [key: string]: string | string[] } = {
   [HealthLinkPermissions.OxygenSaturation]:
     AppleHealthKit.Constants.Permissions.OxygenSaturation,
   [HealthLinkPermissions.Steps]: AppleHealthKit.Constants.Permissions.Steps,
+  [HealthLinkPermissions.ActiveEnergyBurned]:
+    AppleHealthKit.Constants.Permissions.ActiveEnergyBurned,
+  [HealthLinkPermissions.BasalEnergyBurned]:
+    AppleHealthKit.Constants.Permissions.BasalEnergyBurned,
 };
 
 const genericToAndroidMap: {
@@ -93,4 +97,6 @@ const genericToAndroidMap: {
   [HealthLinkPermissions.BloodPressure]: 'BloodPressure',
   [HealthLinkPermissions.OxygenSaturation]: 'OxygenSaturation',
   [HealthLinkPermissions.Steps]: 'Steps',
+  [HealthLinkPermissions.ActiveEnergyBurned]: 'ActiveCaloriesBurned',
+  [HealthLinkPermissions.BasalEnergyBurned]: 'BasalMetabolicRate',
 };

@@ -5,10 +5,18 @@ import {
 } from 'react-native-health-connect';
 
 import type { HealthValue } from 'react-native-health';
-import { HealthLinkDataType, type ReadOptions } from '../types/dataTypes';
+import {
+  HealthLinkDataType,
+  type AndroidRecordType,
+  type AndroidType,
+  type ReadOptions,
+  AndroidRecordTypeMap,
+} from '../types/dataTypes';
 import {
   androidHeightUnitMap,
   androidWeightUnitMap,
+  androidActiveEnergyUnitMap,
+  androidBasalEnergyUnitMap,
   BloodGlucoseUnit,
 } from '../types/units';
 import type { HealthLinkDataValue } from '../types/results';
@@ -135,6 +143,25 @@ export const dataValueDeserializer = <T extends HealthLinkDataType>(
           value: stepsDataValue.count,
         } as HealthLinkDataValue<T>;
       }
+      case HealthLinkDataType.ActiveEnergyBurned: {
+        const activeEnergyDataValue =
+          androidDataValue as RecordResult<'ActiveCaloriesBurned'>;
+        return {
+          ...result,
+          value: androidActiveEnergyUnitMap(
+            activeEnergyDataValue,
+            options.unit
+          ),
+        } as HealthLinkDataValue<T>;
+      }
+      case HealthLinkDataType.BasalEnergyBurned: {
+        const basalEnergyDataValue =
+          androidDataValue as RecordResult<'BasalMetabolicRate'>;
+        return {
+          ...result,
+          value: androidBasalEnergyUnitMap(basalEnergyDataValue, options.unit),
+        } as HealthLinkDataValue<T>;
+      }
       default:
         return result as HealthLinkDataValue<T>;
     }
@@ -145,12 +172,13 @@ export const dataValueDeserializer = <T extends HealthLinkDataType>(
 export const readDataResultDeserializer = <T extends HealthLinkDataType>(
   dataType: T,
   options: ReadOptions,
-  data: ReadRecordsResult<T> | HealthValue[]
+  data: HealthValue[] | ReadRecordsResult<AndroidType>
 ): HealthLinkDataValue<T>[] => {
-  let dataValueArray: RecordResult<T>[] | HealthValue[] =
+  const dataValueArray =
     Platform.OS === 'ios'
       ? (data as HealthValue[])
-      : (data as ReadRecordsResult<T>).records;
+      : (data as { records: RecordResult<AndroidRecordType<T>>[] }).records;
+
   return dataValueArray.reduce((acc, d) => {
     const deserializedValue = dataValueDeserializer(dataType, options, d);
     if (deserializedValue !== null) {
@@ -185,6 +213,14 @@ export const dataValueToIosReadFunction = (dataType: HealthLinkDataType) => {
     OxygenSaturation: AppleHealthKit.getOxygenSaturationSamples,
     BloodPressure: AppleHealthKit.getBloodPressureSamples,
     Steps: AppleHealthKit.getDailyStepCountSamples,
+    ActiveEnergyBurned: AppleHealthKit.getActiveEnergyBurned,
+    BasalEnergyBurned: AppleHealthKit.getBasalEnergyBurned,
   };
   return dataTypeMap[dataType] || (() => {});
+};
+
+export const healthLinkToAndroidType = (
+  dataType: HealthLinkDataType
+): AndroidType => {
+  return AndroidRecordTypeMap[dataType];
 };

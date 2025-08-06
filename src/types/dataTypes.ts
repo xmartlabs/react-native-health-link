@@ -12,6 +12,8 @@ import { type ReadRecordsOptions } from 'react-native-health-connect';
  * @property {string} BloodPressure - Represents blood pressure measurement.
  * @property {string} OxygenSaturation - Represents oxygen saturation levels.
  * @property {string} Steps - Represents the number of steps taken.
+ * @property {string} ActiveEnergyBurned - Represents active calories burned through physical activity.
+ * @property {string} BasalEnergyBurned - Represents basal/resting calories burned.
  */
 export enum HealthLinkDataType {
   BloodGlucose = 'BloodGlucose',
@@ -22,6 +24,8 @@ export enum HealthLinkDataType {
   BloodPressure = 'BloodPressure',
   OxygenSaturation = 'OxygenSaturation',
   Steps = 'Steps',
+  ActiveEnergyBurned = 'ActiveEnergyBurned',
+  BasalEnergyBurned = 'BasalEnergyBurned',
 }
 
 export type TimeOperator = 'after' | 'before' | 'between';
@@ -54,3 +58,31 @@ export const optionsToAndroidOptions = (
     pageSize: options.limit,
   };
 };
+
+export type AndroidType =
+  | 'BloodGlucose'
+  | 'Height'
+  | 'Weight'
+  | 'HeartRate'
+  | 'RestingHeartRate'
+  | 'BloodPressure'
+  | 'OxygenSaturation'
+  | 'Steps'
+  | 'ActiveCaloriesBurned'
+  | 'BasalMetabolicRate';
+
+export const AndroidRecordTypeMap: Record<HealthLinkDataType, AndroidType> = {
+  [HealthLinkDataType.BloodGlucose]: 'BloodGlucose',
+  [HealthLinkDataType.Height]: 'Height',
+  [HealthLinkDataType.Weight]: 'Weight',
+  [HealthLinkDataType.HeartRate]: 'HeartRate',
+  [HealthLinkDataType.RestingHeartRate]: 'RestingHeartRate',
+  [HealthLinkDataType.BloodPressure]: 'BloodPressure',
+  [HealthLinkDataType.OxygenSaturation]: 'OxygenSaturation',
+  [HealthLinkDataType.Steps]: 'Steps',
+  [HealthLinkDataType.ActiveEnergyBurned]: 'ActiveCaloriesBurned',
+  [HealthLinkDataType.BasalEnergyBurned]: 'BasalMetabolicRate',
+};
+
+export type AndroidRecordType<T extends HealthLinkDataType> =
+  (typeof AndroidRecordTypeMap)[T];

@@ -1,6 +1,7 @@
 import { HealthLinkDataType } from './dataTypes';
 import {
   BloodGlucoseUnit,
+  EnergyUnit,
   HeartRateUnit,
   HeighUnit,
   StepsUnit,
@@ -23,7 +24,8 @@ export type Unit =
   | WeightUnit
   | StepsUnit
   | HeighUnit
-  | HeartRateUnit;
+  | HeartRateUnit
+  | EnergyUnit;
 
 export type WriteOptions<T extends WriteDataType> = WriteOptionsBase<T> &
   (T extends HealthLinkDataType.Steps
